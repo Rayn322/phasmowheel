@@ -1,1 +1,5 @@
-<h1 class="text-3xl font-bold underline">Hello world!</h1>
+<script lang="ts">
+	import Wheel from '$lib/components/Wheel.svelte';
+</script>
+
+<Wheel />
