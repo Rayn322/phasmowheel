@@ -48,10 +48,13 @@
 		ctx.rotate(timestamp / 1000);
 		ctx.font = '30px Inter';
 
-		const measured = ctx.measureText(timestamp.toString());
-		console.log(measured);
+		const measurements = ctx.measureText(timestamp.toString());
 
-		ctx.fillText(timestamp.toString(), -measured.width / 2, measured.actualBoundingBoxAscent / 2);
+		ctx.fillText(
+			timestamp.toString(),
+			-measurements.width / 2,
+			measurements.actualBoundingBoxAscent / 2
+		);
 		ctx.rotate(-timestamp / 1000);
 
 		ctx.translate(-250, -250);
