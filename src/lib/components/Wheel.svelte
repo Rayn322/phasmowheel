@@ -4,7 +4,7 @@
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D;
 	let reqId: number;
-	let options = ['Hello', 'World', 'Foo', 'Bar', 'potato', 'banana'];
+	let options = ['Wraith', 'Mare', 'Demon', 'Shade', 'Jinn', 'Oni'];
 
 	$effect(() => {
 		const gottenCtx = canvas.getContext('2d');
@@ -74,6 +74,22 @@
 		ctx.beginPath();
 		ctx.arc(0, 0, 245, 0, 2 * Math.PI, false);
 		ctx.stroke();
+
+		// text
+		for (let i = 0; i < options.length; i++) {
+			ctx.save();
+
+			// TODO: make the math not look stupid (i speedran this with copilot)
+
+			const measurements = ctx.measureText(options[i]);
+			const textWidth = measurements.width;
+
+			// rotate to divider line and then rotate to middle of section
+			ctx.rotate(((2 * Math.PI) / options.length) * i + Math.PI / options.length);
+			ctx.fillText(options[i], 225 - textWidth, measurements.actualBoundingBoxAscent / 2);
+
+			ctx.restore();
+		}
 
 		ctx.translate(-250, -250);
 
