@@ -4,6 +4,7 @@
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D;
 	let reqId: number;
+	let options = ['Hello', 'World', 'Foo', 'Bar', 'potato', 'banana'];
 
 	$effect(() => {
 		const gottenCtx = canvas.getContext('2d');
@@ -13,8 +14,8 @@
 		} else {
 			throw new Error('2d context not supported');
 		}
-
 		scaleForHighRes(canvas, ctx);
+		ctx.lineWidth = 2;
 
 		let f = new FontFace(
 			'Inter',
@@ -33,29 +34,46 @@
 	function animate(timestamp: number) {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-		ctx.beginPath();
-		ctx.arc(250, 250, 245, 0, 90, false);
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.arc(250, 250, 5, 0, 360, false);
-		ctx.fill();
-
-		ctx.font = '40px Inter';
-		ctx.fillText('Hello, world!', 250, 250);
-
 		ctx.translate(250, 250);
-		ctx.rotate(timestamp / 1000);
 		ctx.font = '30px Inter';
 
-		const measurements = ctx.measureText(timestamp.toString());
+		// filled arcs
+		for (let i = 0; i < options.length; i++) {
+			ctx.save();
 
-		ctx.fillText(
-			timestamp.toString(),
-			-measurements.width / 2,
-			measurements.actualBoundingBoxAscent / 2
-		);
-		ctx.rotate(-timestamp / 1000);
+			// idk copilot did these colors
+			ctx.fillStyle = 'hsl(' + (i * 360) / options.length + ', 100%, 50%)';
+
+			ctx.beginPath();
+			ctx.moveTo(0, 0);
+			ctx.arc(
+				0,
+				0,
+				245,
+				((2 * Math.PI) / options.length) * i,
+				((2 * Math.PI) / options.length) * (i + 1)
+			);
+			ctx.fill();
+
+			ctx.restore();
+		}
+
+		// divider lines
+		for (let i = 0; i < options.length; i++) {
+			ctx.save();
+
+			ctx.beginPath();
+			ctx.moveTo(0, 0);
+			ctx.rotate(((2 * Math.PI) / options.length) * i);
+			ctx.lineTo(245, 0);
+			ctx.stroke();
+
+			ctx.restore();
+		}
+
+		ctx.beginPath();
+		ctx.arc(0, 0, 245, 0, 2 * Math.PI, false);
+		ctx.stroke();
 
 		ctx.translate(-250, -250);
 
